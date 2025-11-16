@@ -26,6 +26,6 @@ public class AgentMove : MonoBehaviour
         {
             _currentPosIndex += _currentPosIndex + 1 < _findPath.Positions.Length - 1 ? 1 : 0;
         }
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, _speed);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, _speed * Time.deltaTime);
     }
 }
