@@ -5,6 +5,8 @@ public class FindPath : MonoBehaviour
 {
     /// <summary>パスの最大登録数</summary>
     const int _maxPositions = 9;
+    /// <summary>pathの配列のプロパティ</summary>
+    public Vector3[] Positions => _positions;
     /// <summary>開始地点</summary>
     [SerializeField, Header("Start")]
     private Transform _startPos;
