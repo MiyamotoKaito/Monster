@@ -1,4 +1,5 @@
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,5 +21,11 @@ public class FindPath : MonoBehaviour
     private void Awake()
     {
         _path = new NavMeshPath();
+    }
+    private void Start()
+    {
+        //Path‚ÌŒvŽZ
+        NavMesh.CalculatePath(_startPos.localPosition, _endPos.localPosition, NavMesh.AllAreas, _path);
+        _path.GetCornersNonAlloc(_positions);
     }
 }
