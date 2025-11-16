@@ -25,7 +25,7 @@ public class FindPath : MonoBehaviour
     private void Start()
     {
         //Path‚ÌŒvŽZ
-        NavMesh.CalculatePath(_startPos.localPosition, _endPos.localPosition, NavMesh.AllAreas, _path);
+        NavMesh.CalculatePath(_startPos.position, _endPos.position, NavMesh.AllAreas, _path);
         _path.GetCornersNonAlloc(_positions);
     }
     private void OnDrawGizmosSelected()
