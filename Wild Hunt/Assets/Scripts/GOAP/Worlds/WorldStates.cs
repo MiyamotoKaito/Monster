@@ -46,7 +46,7 @@ public class WorldStates
         {
             _states[key] += value;
             //—Dæ“x‚ª0ˆÈ‰º‚É‚È‚Á‚½‚ç«‘‚©‚çíœ‚·‚é
-            if (_states[key] > 0)
+            if (_states[key] <= 0)
             {
                 RemoveState(key);
             }
