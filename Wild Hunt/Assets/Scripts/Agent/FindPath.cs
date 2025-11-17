@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class FindPath : MonoBehaviour
 {
     /// <summary>パスの最大登録数</summary>
-    const int _maxPositions = 9;
+    const int _maxPositions = 5;
     /// <summary>pathの配列のプロパティ</summary>
     public Vector3[] Positions => _positions;
     /// <summary>開始地点</summary>

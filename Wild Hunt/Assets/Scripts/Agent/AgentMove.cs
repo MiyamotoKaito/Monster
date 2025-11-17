@@ -24,7 +24,7 @@ public class AgentMove : MonoBehaviour
         var targetPos = _findPath.Positions[_currentPosIndex];
         if (Vector3.Distance(transform.position, targetPos) < _distance)
         {
-            _currentPosIndex += _currentPosIndex + 1 < _findPath.Positions.Length - 1 ? 1 : 0;
+            _currentPosIndex += _currentPosIndex + 1 < _findPath.Positions.Length ? 1 : 0;
         }
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _speed * Time.deltaTime);
     }
