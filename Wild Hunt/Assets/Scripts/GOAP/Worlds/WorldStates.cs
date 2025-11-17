@@ -10,7 +10,10 @@ public class WorldState
 
 public class WorldStates
 {
-    public Dictionary<string, int> _states;
+    public Dictionary<string, int> _States => _states;
+
+    [SerializeField]
+    private Dictionary<string, int> _states;
     //変数初期化用のコンストラクタ
     public WorldStates()
     {
