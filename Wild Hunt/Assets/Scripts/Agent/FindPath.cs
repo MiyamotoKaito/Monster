@@ -1,21 +1,21 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.AI;
 
 public class FindPath : MonoBehaviour
 {
-    /// <summary>ƒpƒX‚ÌÅ‘å“o˜^”</summary>
+    /// <summary>ãƒ‘ã‚¹ã®æœ€å¤§ç™»éŒ²æ•°</summary>
     const int _maxPositions = 5;
-    /// <summary>path‚Ì”z—ñ‚ÌƒvƒƒpƒeƒB</summary>
+    /// <summary>pathã®é…åˆ—ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£</summary>
     public Vector3[] Positions => _positions;
-    /// <summary>ŠJn’n“_</summary>
+    /// <summary>é–‹å§‹åœ°ç‚¹</summary>
     [SerializeField, Header("Start")]
     private Transform _startPos;
-    /// <summary>“’B’n“_</summary>
+    /// <summary>åˆ°é”åœ°ç‚¹</summary>
     [SerializeField, Header("End")]
     private Transform _endPos;
-    /// <summary>ŠJn’n“_‚©‚ç“’B’n“_‚Ü‚Å‚ÌÀ•W‚Ì”z—ñ</summary>
+    /// <summary>é–‹å§‹åœ°ç‚¹ã‹ã‚‰åˆ°é”åœ°ç‚¹ã¾ã§ã®åº§æ¨™ã®é…åˆ—</summary>
     private Vector3[] _positions = new Vector3[_maxPositions];
-    /// <summary>ƒpƒX</summary>
+    /// <summary>ãƒ‘ã‚¹</summary>
     private NavMeshPath _path;
 
     private void Awake()
@@ -24,7 +24,7 @@ public class FindPath : MonoBehaviour
     }
     private void Start()
     {
-        //Path‚ÌŒvZ
+        //Pathã®è¨ˆç®—
         NavMesh.CalculatePath(_startPos.position, _endPos.position, NavMesh.AllAreas, _path);
         _path.GetCornersNonAlloc(_positions);
     }
