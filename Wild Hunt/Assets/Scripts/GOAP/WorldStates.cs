@@ -1,26 +1,32 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹
+/// </summary>
 [System.Serializable]
 public class WorldState
 {
     public string Key;
     public int Value;
 }
-
+/// <summary>
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆç®¡ç†ã‚¯ãƒ©ã‚¹
+/// </summary>
 public class WorldStates
 {
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆã®è¾æ›¸ã‚’è¿”ã™ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     public Dictionary<string, int> _States => _states;
 
     [SerializeField]
     private Dictionary<string, int> _states;
-    //•Ï”‰Šú‰»—p‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    //å¤‰æ•°åˆæœŸåŒ–ç”¨ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     public WorldStates()
     {
         _states = new Dictionary<string, int>();
     }
     /// <summary>
-    /// ƒXƒe[ƒg‚ğ‚Á‚Ä‚¢‚é‚©”»•Ê‚·‚é
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’æŒã£ã¦ã„ã‚‹ã‹åˆ¤åˆ¥ã™ã‚‹
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
@@ -29,7 +35,7 @@ public class WorldStates
         return _states.ContainsKey(key);
     }
     /// <summary>
-    /// ˆø”‚É“n‚³‚ê‚½’l‚ğ«‘‚É“o˜^‚·‚é
+    /// å¼•æ•°ã«æ¸¡ã•ã‚ŒãŸå€¤ã‚’è¾æ›¸ã«ç™»éŒ²ã™ã‚‹
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
@@ -38,30 +44,30 @@ public class WorldStates
         _states.Add(key, value);
     }
     /// <summary>
-    /// ƒXƒe[ƒg‚Ì’l‚ğ•ÏX‚·‚é
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆã®å€¤ã‚’å¤‰æ›´ã™ã‚‹
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
     private void ModifyState(string key, int value)
     {
-        //—Dæ“x‚Ì’l‚ğ•ÏX‚·‚é
+        //å„ªå…ˆåº¦ã®å€¤ã‚’å¤‰æ›´ã™ã‚‹
         if (_states.ContainsKey(key))
         {
             _states[key] += value;
-            //—Dæ“x‚ª0ˆÈ‰º‚É‚È‚Á‚½‚ç«‘‚©‚çíœ‚·‚é
+            //å„ªå…ˆåº¦ãŒ0ä»¥ä¸‹ã«ãªã£ãŸã‚‰è¾æ›¸ã‹ã‚‰å‰Šé™¤ã™ã‚‹
             if (_states[key] <= 0)
             {
                 RemoveState(key);
             }
         }
-        //“n‚³‚ê‚½ƒXƒe[ƒg‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç“o˜^‚·‚é
+        //æ¸¡ã•ã‚ŒãŸã‚¹ãƒ†ãƒ¼ãƒˆãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ç™»éŒ²ã™ã‚‹
         else
         {
             _states.Add(key, value);
         }
     }
     /// <summary>
-    /// ƒXƒe[ƒg‚ğíœ‚·‚é
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å‰Šé™¤ã™ã‚‹
     /// </summary>
     /// <param name="key"></param>
     public void RemoveState(string key)
@@ -70,5 +76,29 @@ public class WorldStates
         {
             _states.Remove(key);
         }
+    }
+    /// <summary>
+    /// å€¤ã‚’è¨­å®šã™ã‚‹
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public void SetState(string key, int value)
+    {
+        if (_states.ContainsKey(key))
+        {
+            _states[key] = value;
+        }
+        else
+        {
+            _states.Add(key, value);
+        }
+    }
+    /// <summary>
+    /// è¾æ›¸ã‚’è¿”ã™
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<string, int> GetStates()
+    {
+        return _states;
     }
 }
