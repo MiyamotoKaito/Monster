@@ -24,28 +24,29 @@ MonoBehaviour:
       type: {class: SetTarget, ns: , asm: Assembly-CSharp}
       data:
         _cost: 1
+        _precondition: 0
         _effect: 0
+        _findNearest: 1
     - rid: 8072880853271183425
       type: {class: Drink, ns: , asm: Assembly-CSharp}
       data:
         _cost: 3
-        _targetTag: Water
-        _drinkAmount: 3
         _precondition: 1
+        _effect: 0
         _subGoal: 1
+        _drinkAmount: 3
     - rid: 8992580478063870183
       type: {class: MoveToTarget, ns: , asm: Assembly-CSharp}
       data:
         _cost: 1
-        _speed: 5
-        _stopDistance: 2
         _precondition: 0
         _effect: 1
-        _targetTag: Food
+        _speed: 5
+        _stopDistance: 2
     - rid: 8992580478063870184
       type: {class: Eat, ns: , asm: Assembly-CSharp}
       data:
-        _cost: 1
-        _targetTag: Food
+        _cost: 5
         _precondition: 1
+        _effect: 0
         _subGoal: 0

@@ -8,6 +8,7 @@ public class GAgent : MonoBehaviour
 {
     public Dictionary<GSubGoal, int> SubGoals => _subGoals;
     public GameObject TargetObj => _targetObj;
+    public string CurrentTargetTag => _currentTargetTag;
 
     private Dictionary<GSubGoal, int> _subGoals = new();
     private Queue<IAction> _actionQueue = new();
@@ -18,12 +19,13 @@ public class GAgent : MonoBehaviour
 
     [SerializeReference]
     private IAction _currentAction;
-    private WorldStates _worldStates;
 
-    // 計画再計算のためのクールダウン
+    private WorldStates _worldStates;
     private float _planningTimer = 0f;
     private float _planningInterval = 0.2f;
     private GameObject _targetObj;
+    private string _currentTargetTag;
+    private GSubGoal _currentGoal; // 追加：現在実行中のゴール
 
     private void Start()
     {
@@ -58,7 +60,14 @@ public class GAgent : MonoBehaviour
                 Debug.Log($"<color=lime>[GAgent] アクション完了: {_currentAction.GetType().Name}</color>");
                 ApplyEffect(_currentAction.Effects);
                 _currentAction = null;
+
+                // 【重要】キューが空になったら、ゴールが達成されたかチェック
+                if (_actionQueue.Count == 0)
+                {
+                    CheckGoalCompletion();
+                }
             }
+
             return;
         }
 
@@ -81,13 +90,37 @@ public class GAgent : MonoBehaviour
                 _actionQueue = plan;
                 _currentAction = null;
                 _targetObj = goal.Key.TargetObj;
-                Debug.Log("[GAgent] 新しい計画を採用しました。実行フェーズに移行します。");
+                _currentTargetTag = goal.Key.TargetTag;
+                _currentGoal = goal.Key; // 追加：現在のゴールを記録
+                Debug.Log($"[GAgent] 新しい計画を採用しました。ゴール: {goal.Key.Name}, ターゲットタグ: {_currentTargetTag}");
                 break;
             }
         }
     }
 
-    // --- 以下、ヘルパーメソッド ---
+    /// <summary>
+    /// ゴールが達成されたかチェックし、達成されていたら削除
+    /// </summary>
+    private void CheckGoalCompletion()
+    {
+        if (_currentGoal == null) return;
+
+        Dictionary<string, int> currentState = _worldStates.GetStates();
+
+        if (GoalAchieved(_currentGoal.SubGoals, currentState))
+        {
+            Debug.Log($"<color=cyan>[GAgent] ゴール達成: {_currentGoal.Name}</color>");
+
+            // Removeフラグがtrueなら削除
+            if (_currentGoal.Remove)
+            {
+                RemoveSubGoal(_currentGoal);
+                Debug.Log($"<color=cyan>[GAgent] ゴールを削除しました: {_currentGoal.Name}</color>");
+            }
+
+            _currentGoal = null;
+        }
+    }
 
     private bool GoalAchieved(Dictionary<string, int> goal, Dictionary<string, int> currentState)
     {
@@ -106,6 +139,18 @@ public class GAgent : MonoBehaviour
         if (!_subGoals.ContainsKey(goal))
         {
             _subGoals.Add(goal, priority);
+            Debug.Log($"[GAgent] サブゴール追加: {goal.Name}, 優先度: {priority}");
+        }
+    }
+
+    /// <summary>
+    /// サブゴールを削除
+    /// </summary>
+    public void RemoveSubGoal(GSubGoal goal)
+    {
+        if (_subGoals.ContainsKey(goal))
+        {
+            _subGoals.Remove(goal);
         }
     }
 
@@ -116,11 +161,17 @@ public class GAgent : MonoBehaviour
             _worldStates.ModifyState(entry.Key, entry.Value);
         }
     }
+
     public void ModifyGoalPriority(GSubGoal goal, int value)
     {
         if (_subGoals.ContainsKey(goal))
         {
             _subGoals[goal] += value;
         }
+    }
+
+    public void SetTargetObj(GameObject target)
+    {
+        _targetObj = target;
     }
 }

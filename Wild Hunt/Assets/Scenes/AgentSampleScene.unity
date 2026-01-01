@@ -1806,20 +1806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 404b60440e0c31344b7d56c14d4183dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoToHospital
-  cost: 1
-  _target: {fileID: 1274417814}
-  _targetTag: 
-  _duration: 0
-  _preConditions: []
-  _afterEffects:
-  - Key: IsWaiting
-    Value: 0
-  _agent: {fileID: 0}
-  agentBeliefs:
-    Key: 
-    Value: 0
-  _running: 0
-  wawa: GoToHospital
 --- !u!114 &1524825704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,8 +2306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268a499abdb870140961989ef9ecd290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurvivalStats
-  _hunger: 5
-  _thirst: 7.92
+  _hunger: 7
+  _thirst: 5
   _eatSubGoal: 0
   _drinkSubGoal: 1
   _isHungerGoalActive: 0
