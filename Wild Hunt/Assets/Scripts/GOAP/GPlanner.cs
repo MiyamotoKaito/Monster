@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine; // Debug.Logのために必要
+using UnityEngine;
 using System.Linq;
 
 namespace GOAP.GPlanner
