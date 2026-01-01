@@ -1,34 +1,34 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveToTarget : ActionBase, IAction
+public class MoveToTarget : ActionBase
 {
-    public Dictionary<string, int> Preconditions => new Dictionary<string, int>() { { _precondition.ToString(), 1 } };
+    [SerializeField] private float _speed = 3.5f;
+    [SerializeField] private float _stopDistance = 1.5f;
 
-    public Dictionary<string, int> Effects => new Dictionary<string, int>() { { _effect.ToString(), 1 } };
+    public override Dictionary<string, int> Preconditions =>
+        new Dictionary<string, int>()
+        {
+            { _precondition.ToString(), 1 }
+        };
 
-    public int Cost => _cost;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _stopDistance;
-    [SerializeField] private WorldStateType _precondition;
-    [SerializeField] private WorldStateType _effect;
+    public override Dictionary<string, int> Effects =>
+        new Dictionary<string, int>()
+        {
+            { "AtTarget", 1 }  // 固定文字列を使用
+        };
 
-    //実行時変数
-    private Transform _target;
-    [SerializeField]
-    private string _targetTag;
-
-    public bool CheckPrecondition(GAgent agent)
+    public override bool CheckPrecondition(GAgent agent)
     {
         return _target != null;
     }
 
-    public void Execute(GAgent agent)
+    public override void Execute(GAgent agent)
     {
-        _target = agent.TargetObj.transform;
+        _target = agent.TargetObj != null ? agent.TargetObj.transform : null;
     }
 
-    public bool Perform(GAgent agent)
+    public override bool Perform(GAgent agent)
     {
         // ターゲットがいない場合は失敗として中断
         if (_target == null) return false;
@@ -41,9 +41,6 @@ public class MoveToTarget : ActionBase, IAction
             // 移動処理
             Vector3 direction = (_target.position - agent.transform.position).normalized;
             agent.transform.position += direction * _speed * Time.deltaTime;
-
-            // 【重要】まだ終わっていないので false を返す
-            // これにより、GAgentは次のアクションに進まずにこのメソッドを呼び続けます
             return false;
         }
 

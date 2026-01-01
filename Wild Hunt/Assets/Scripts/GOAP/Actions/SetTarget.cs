@@ -1,27 +1,56 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SetTarget : ActionBase,IAction
+public class SetTarget : ActionBase
 {
-    // 前提条件を空にする（ターゲットがいてもいなくても、探し直せるようにする）
-    public Dictionary<string, int> Preconditions => new Dictionary<string, int>();
+    [SerializeField] private bool _findNearest = true; // 最も近いターゲットを探すか
 
-    public Dictionary<string, int> Effects => new Dictionary<string, int>() { { _effect.ToString(), 1 } };
-    public int Cost => _cost;
-    [SerializeField] private WorldStateType _effect;
-    private Transform _target;
+    public override Dictionary<string, int> Preconditions => new Dictionary<string, int>();
 
-    public bool CheckPrecondition(GAgent agent) => true; // 常に実行可能にする
+    public override Dictionary<string, int> Effects =>
+        new Dictionary<string, int>()
+        {
+            { _effect.ToString(), 1 }
+        };
 
-    public void Execute(GAgent agent) { }
+    public override bool CheckPrecondition(GAgent agent) => true;
 
-    public bool Perform(GAgent agent)
+    public override void Execute(GAgent agent)
     {
-        _target = agent.TargetObj.transform;
+        string targetTag = agent.CurrentTargetTag;
+
+        if (string.IsNullOrEmpty(targetTag))
+        {
+            Debug.LogWarning("[SetTarget] CurrentTargetTagが設定されていません");
+            return;
+        }
+
+        GameObject targetObj;
+
+        if (_findNearest)
+        {
+            targetObj = FindNearestTargetByTag(targetTag, agent.transform.position);
+        }
+        else
+        {
+            targetObj = FindTargetByTag(targetTag);
+        }
+
+        if (targetObj != null)
+        {
+            _target = targetObj.transform;
+            agent.SetTargetObj(targetObj); // エージェントのTargetObjを更新
+            Debug.Log($"[SetTarget] ターゲット設定: {targetObj.name} (タグ: {targetTag})");
+        }
+    }
+
+    public override bool Perform(GAgent agent)
+    {
         if (_target == null) return false;
 
-        // 【重要】実行時にワールドステートを更新して、次のMoveアクションを動かせるようにする
+        // 【重要】実行時にワールドステートを更新
         GOAP.WorldStates.WorldStates.Instance.ModifyState(_effect.ToString(), 1);
+
         return true;
     }
 }
